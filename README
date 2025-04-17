@@ -1,0 +1,114 @@
+# Laravel 12 Docker Setup
+
+This repository contains a Docker setup for Laravel 12 projects, following best practices for development and production environments.
+
+## Directory Structure
+
+Before using this setup, create the following directory structure:
+
+```
+project-root/
+│
+├── docker/
+│   ├── mysql/
+│   │   └── my.cnf
+│   ├── nginx/
+│   │   ├── conf.d/
+│   │   │   └── app.conf
+│   │   └── ssl/ (for SSL certificates)
+│   └── php/
+│       └── local.ini
+│
+├── .env
+├── docker-compose.yml
+├── Dockerfile
+└── Makefile
+```
+
+## Setup Instructions
+
+1. **Clone your Laravel project or create a new one**
+
+   ```bash
+   # For a new project
+   composer create-project laravel/laravel . "^12.0"
+   ```
+
+2. **Copy the environment file**
+
+   ```bash
+   cp .env.example .env
+   ```
+
+3. **Build and start the containers**
+
+   ```bash
+   docker-compose up -d
+   ```
+
+4. **Install dependencies and set up Laravel**
+
+   ```bash
+   docker-compose exec app composer install
+   docker-compose exec app php artisan key:generate
+   docker-compose exec app php artisan migrate
+   ```
+
+## Available Services
+
+- **Laravel App**: PHP 8.3 with FPM
+- **Web Server**: Nginx
+- **Database**: MySQL 8.0
+- **Cache & Queue**: Redis
+- **Queue Worker**: Laravel Queue Worker
+- **Database Management**: phpMyAdmin (optional, accessible at http://localhost:8080)
+
+## Using the Makefile
+
+The included Makefile provides shortcuts for common Docker and Laravel commands:
+
+```bash
+# Start containers
+make up
+
+# Stop containers
+make down
+
+# Access the app container shell
+make bash
+
+# Run migrations
+make migrate
+
+# Run tests
+make test
+
+# Clear Laravel cache
+make cache-clear
+```
+
+## Configuration Notes
+
+- The MySQL data is persisted in a Docker volume
+- Redis data is persisted in a Docker volume
+- The Nginx server is configured for optimal Laravel performance
+- PHP is configured with optimized settings for Laravel
+- Queue worker is configured to handle background jobs
+
+## Production Considerations
+
+For production environments:
+
+1. Set `APP_ENV=production` and `APP_DEBUG=false` in `.env`
+2. Configure proper SSL certificates in `docker/nginx/ssl/`
+3. Set strong passwords for MySQL and Redis
+4. Consider using a dedicated database server for high-traffic applications
+5. Implement proper monitoring and logging
+
+## Extending the Setup
+
+This base setup can be extended with additional services as needed:
+
+- Elasticsearch for improved search functionality
+- Mailhog for local email testing
+- Selenium for browser testing
