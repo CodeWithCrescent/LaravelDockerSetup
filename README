@@ -26,32 +26,41 @@ project-root/
 ```
 
 ## Setup Instructions
+docker-compose exec app bash
 
-1. **Clone your Laravel project or create a new one**
+cd /tmp
 
-   ```bash
-   # For a new project
-   docker-compose exec app composer create-project laravel/laravel . "^12.0"
-   ```
+# Create a fresh temporary directory with a unique name
+mkdir laravel_temp_install
 
-2. **Copy the environment file**
+# Go to the temporary directory
+cd laravel_temp_install
 
-   ```bash
-   cp .env.example .env
-   ```
+# Use Composer directly instead of the Laravel installer
+composer create-project laravel/laravel . "^12.0"
 
-3. **Build and start the containers**
+# Once installation is complete, copy files to your project directory
+# First verify what files are in your current working directory
+ls -la /var/www/html
 
-   ```bash
-   docker-compose up -d
-   ```
+# Copy Docker configurations to a backup location
+mkdir -p /tmp/docker_backup
+cp -a /var/www/html/docker /var/www/html/docker-compose.yml /var/www/html/Dockerfile /var/www/html/Makefile /tmp/docker_backup/
 
-4. **Install dependencies and set up Laravel**
+# Now copy all Laravel files to your main project directory
+cp -a /tmp/laravel_temp_install/. /var/www/html/
 
-   ```bash
-   docker-compose exec app composer install
-   docker-compose exec app php artisan key:generate
-   docker-compose exec app php artisan migrate
+# Restore Docker configuration files
+cp -a /tmp/docker_backup/. /var/www/html/
+
+# Go back to your project directory
+cd /var/www/html
+
+# Set proper permissions
+chmod -R 775 storage bootstrap/cache
+
+# Generate a key
+php artisan key:generate
    ```
 
 ## Available Services
