@@ -31,7 +31,7 @@ project-root/
 
    ```bash
    # For a new project
-   composer create-project laravel/laravel . "^12.0"
+   docker-compose exec app composer create-project laravel/laravel . "^12.0"
    ```
 
 2. **Copy the environment file**
