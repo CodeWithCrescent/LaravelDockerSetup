@@ -65,12 +65,12 @@ php artisan key:generate
 
 ## Available Services
 
-- **Laravel App**: PHP 8.3 with FPM
-- **Web Server**: Nginx
-- **Database**: MySQL 8.0
-- **Cache & Queue**: Redis
-- **Queue Worker**: Laravel Queue Worker
-- **Database Management**: phpMyAdmin (optional, accessible at http://localhost:8080)
+- Laravel App: PHP 8.3 with FPM
+- Web Server: Nginx
+- Database: MySQL 8.0
+- Cache & Queue: Redis
+- Queue Worker: Laravel Queue Worker
+- Database Management: phpMyAdmin (optional, accessible at http://localhost:8080)
 
 ## Using the Makefile
 
